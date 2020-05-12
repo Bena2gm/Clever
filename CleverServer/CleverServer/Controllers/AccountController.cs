@@ -31,10 +31,9 @@ namespace CleverServer.Controllers
                 // добавляем пользователя
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                {
-                    // установка куки
+                {   
                     await signInManager.SignInAsync(user, false);
-                    return "Index+Home";
+                    return "True";
                 }
                 else
                 {
@@ -50,7 +49,7 @@ namespace CleverServer.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<String> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -59,18 +58,18 @@ namespace CleverServer.Controllers
                     await signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
                 if (result.Succeeded)
                 {
-                    return "true";
+                    return "True";
                 }
                 else
                 {
                     return "Неправильный логин и (или) пароль";
                 }
             }
-            return "Пустые поля?";
+            return "Пустое поле";
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<string> Logout()
         {
             // удаляем аутентификационные куки
