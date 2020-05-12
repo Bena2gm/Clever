@@ -48,6 +48,36 @@ namespace CleverServer.Controllers
             return err;
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<String> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result =
+                    await signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
+                if (result.Succeeded)
+                {
+                    return "true";
+                }
+                else
+                {
+                    return "Неправильный логин и (или) пароль";
+                }
+            }
+            return "Пустые поля?";
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> Logout()
+        {
+            // удаляем аутентификационные куки
+            await signInManager.SignOutAsync();
+            return "Logout";
+        }
+
         public IActionResult Index()
         {
             return View();
